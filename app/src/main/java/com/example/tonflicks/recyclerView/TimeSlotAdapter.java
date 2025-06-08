@@ -1,13 +1,15 @@
-package com.example.tonflicks;
+package com.example.tonflicks.recyclerView;
 
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tonflicks.R;
 
 import java.util.List;
 
@@ -20,7 +22,9 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.time_slot_item, parent, false);
+        return new TimeSlotAdapter.ViewHolder(view);
     }
 
     @Override

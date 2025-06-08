@@ -1,4 +1,4 @@
-package com.example.tonflicks;
+package com.example.tonflicks.fragment;
 
 import android.os.Bundle;
 
@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SimpleAdapter;
+
+import com.example.tonflicks.R;
+import com.example.tonflicks.recyclerView.Film;
+import com.example.tonflicks.recyclerView.FilmAdapter;
 
 import java.util.Arrays;
 import java.util.List;

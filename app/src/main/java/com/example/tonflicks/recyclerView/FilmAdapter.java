@@ -1,4 +1,4 @@
-package com.example.tonflicks;
+package com.example.tonflicks.recyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tonflicks.dialog.FilmDetailsDialog;
+import com.example.tonflicks.R;
 
 import java.util.List;
 

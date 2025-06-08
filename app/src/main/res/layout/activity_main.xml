@@ -12,31 +12,78 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Ваш существующий заголовок и другие элементы -->
-        <LinearLayout
-            android:id="@+id/headerLayout"
+        <!-- Верхняя панель с заголовком и кнопками -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <!-- Заголовок "Билеты" -->
+            <LinearLayout
+                android:id="@+id/headerLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Билеты"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"/>
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/currentCinemaAddress"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Билеты"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/currentCinemaAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Не выбрано"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <!-- Кнопки справа -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Не выбрано"
-                android:textSize="16sp"
-                android:layout_marginTop="4dp"/>
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+                <ImageButton
+                    android:id="@+id/walletButton"
+                    android:layout_width="31dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Кошелёк"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/img" />
+                <!-- Кнопка корзины -->
+                <ImageButton
+                    android:id="@+id/cartButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_cart"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Корзина"
+                    android:layout_marginEnd="8dp"/>
+
+                <!-- Кнопка аккаунта -->
+                <ImageButton
+                    android:id="@+id/accountButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_account"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Аккаунт"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Остальные элементы остаются без изменений -->
         <EditText
             android:id="@+id/searchMovies"
             android:layout_width="match_parent"
@@ -46,7 +93,7 @@
             android:background="@drawable/search_background"
             android:padding="12dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/headerLayout"/>
+            app:layout_constraintTop_toBottomOf="@id/topBar"/>
 
         <CalendarView
             android:id="@+id/calendar"

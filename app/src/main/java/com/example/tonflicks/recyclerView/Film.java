@@ -1,4 +1,4 @@
-package com.example.tonflicks;
+package com.example.tonflicks.recyclerView;
 
 public class Film {
     private String title;

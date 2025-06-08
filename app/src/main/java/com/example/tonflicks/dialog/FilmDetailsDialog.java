@@ -1,6 +1,7 @@
-package com.example.tonflicks;
+package com.example.tonflicks.dialog;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.tonflicks.R;
+import com.example.tonflicks.activity.TicketBookingActivity;
+import com.example.tonflicks.recyclerView.Film;
 
 public class FilmDetailsDialog extends DialogFragment {
 
@@ -45,6 +50,8 @@ public class FilmDetailsDialog extends DialogFragment {
         buyButton.setOnClickListener(v ->
         {
             Toast.makeText(getContext(), "Билет куплен!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getActivity(), TicketBookingActivity.class);
+            startActivity(intent);
             dismiss();
         });
     }
