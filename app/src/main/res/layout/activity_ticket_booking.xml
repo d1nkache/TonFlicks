@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5B4B8A"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <!-- Заголовок -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выберите место"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Экран -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="Экран"
+        android:textColor="#D0BDF4"
+        android:background="#7765B9"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:backgroundTintMode="src_in"
+        android:backgroundTint="#7765B9"
+        android:drawableTint="#7765B9"
+        android:textSize="16sp"
+        android:background="@drawable/rounded_top"/>
+
+    <!-- Сетка мест -->
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="8"
+        android:layout_marginBottom="32dp">
+
+        <!-- Пример одного места -->
+        <View
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/seat_default"/>
+
+        <!-- Добавь больше таких элементов -->
+    </GridLayout>
+
+    <!-- Сеансы -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выберите сеанс"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:orientation="horizontal"
+        android:id="@+id/recyclerViewTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        tools:listitem="@layout/time_slot_item" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Количество мест"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="32dp">
+
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="−"
+            style="@style/RoundedButton"/>
+
+        <TextView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="2"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"/>
+
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="+"
+            style="@style/RoundedButton"/>
+    </LinearLayout>
+
+    <!-- Оплатить -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Оплатить"
+        style="@style/RoundedButton"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
