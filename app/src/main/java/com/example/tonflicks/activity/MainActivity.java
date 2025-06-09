@@ -1,6 +1,9 @@
 package com.example.tonflicks.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,16 +28,23 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-       NowPlayingFragment nowPlayingFragment = NowPlayingFragment.newInstance("фильмы", "2025");
-       getSupportFragmentManager()
+        NowPlayingFragment nowPlayingFragment = NowPlayingFragment.newInstance("фильмы", "2025");
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.nowPlayingFragmentContainer, nowPlayingFragment)
                 .commit();
 
-       FilmCategoryFragment filmCategoryFragment = FilmCategoryFragment.newInstance("категории", "2025");
-       getSupportFragmentManager()
+        FilmCategoryFragment filmCategoryFragment = FilmCategoryFragment.newInstance("категории", "2025");
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.categoriesFragmentContainer, filmCategoryFragment)
                 .commit();
+
+        ImageButton busketImageButton = findViewById(R.id.basketButton);
+        busketImageButton.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Корзина открыта", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, BasketActivity.class);
+            startActivity(intent);
+        });
     }
 }

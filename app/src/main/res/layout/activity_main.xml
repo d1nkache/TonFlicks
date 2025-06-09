@@ -64,7 +64,7 @@
                     android:src="@drawable/img" />
                 <!-- Кнопка корзины -->
                 <ImageButton
-                    android:id="@+id/cartButton"
+                    android:id="@+id/basketButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_cart"
@@ -83,7 +83,6 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Остальные элементы остаются без изменений -->
         <EditText
             android:id="@+id/searchMovies"
             android:layout_width="match_parent"

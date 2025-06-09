@@ -70,6 +70,7 @@
                     style="@style/RoundedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:backgroundTint="#6C63FF"
                     android:text="Купить билет" />
 
             </LinearLayout>
