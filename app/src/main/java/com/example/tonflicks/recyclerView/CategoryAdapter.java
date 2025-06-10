@@ -15,52 +15,76 @@ import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private List<Category> items;
+    private OnCategoryClickListener listener;
+    private int selectedPosition = RecyclerView.NO_POSITION; // Track the selected position
+
+    // Интерфейс для обработки кликов по категории
+    public interface OnCategoryClickListener {
+        void onCategoryClick(String category);
+    }
 
     public CategoryAdapter(List<Category> items) {
         this.items = items;
     }
 
+    public void setOnCategoryClickListener(OnCategoryClickListener listener) {
+        this.listener = listener;
+    }
+
     @NonNull
     @Override
-    public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.category_item, parent, false);
-        return new CategoryAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Category elem = items.get(position);
-        holder.tvCategory.setText(elem.getName());
+        Category category = items.get(position);
+        holder.tvCategory.setText(category.getName());
 
-        if (elem.isSelected()) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#FF4081"));
+        // Обновление фона и цвета текста в зависимости от состояния
+        if (position == selectedPosition) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FF4081")); // Выбранный цвет
             holder.tvCategory.setTextColor(Color.WHITE);
         } else {
-            holder.itemView.setBackgroundColor(Color.WHITE);
+            holder.itemView.setBackgroundColor(Color.WHITE); // Не выбранный цвет
             holder.tvCategory.setTextColor(Color.BLACK);
         }
 
+        // Обработчик кликов
         holder.itemView.setOnClickListener(v -> {
-            int oldPosition = holder.getAdapterPosition();
-            boolean newState = !elem.isSelected();
-            elem.setSelected(newState);
-            items.remove(oldPosition);
-            int newPosition = newState ? 0 : items.size();
-            items.add(newPosition, elem);
-            notifyItemMoved(oldPosition, newPosition);
-            notifyItemChanged(newPosition);
+            int currentPosition = holder.getAdapterPosition();
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                // Сохраняем предыдущую позицию
+                int previousSelectedPosition = selectedPosition;
+
+                // Сбрасываем выбор предыдущей категории
+                if (previousSelectedPosition != RecyclerView.NO_POSITION) {
+                    items.get(previousSelectedPosition).setSelected(false);
+                    notifyItemChanged(previousSelectedPosition); // Обновляем только предыдущий элемент
+                }
+
+                // Устанавливаем выбор для текущей категории
+                selectedPosition = currentPosition;
+                items.get(currentPosition).setSelected(true);
+                notifyItemChanged(currentPosition); // Обновляем только текущий элемент
+
+                // Уведомляем слушателя о выбранной категории
+                if (listener != null) {
+                    listener.onCategoryClick(category.getName());
+                }
+            }
         });
     }
 
-
     @Override
     public int getItemCount() {
-        return this.items.size();
+        return this.items != null ? this.items.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        Boolean isSelected;
         TextView tvCategory;
 
         public ViewHolder(@NonNull View itemView) {

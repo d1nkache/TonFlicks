@@ -45,7 +45,7 @@ public class FilmDetailsDialog extends DialogFragment {
         title.setText(film.getTitle());
         genre.setText(film.getGenre());
         description.setText("Я НИКОГДА НЕ ДРОЧИЛ НА ГЕЙСКУЮ ПОРНУХУ"); // еблан
-        poster.setImageResource(film.getImageResId());
+        poster.setImageResource(R.drawable.poster_placeholder); //еблан
 
         buyButton.setOnClickListener(v ->
         {

@@ -1,5 +1,6 @@
 package com.example.tonflicks.recyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +35,13 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FilmAdapter.ViewHolder holder, int position) {
         Film elem = items.get(position);
-        holder.ivPoster.setImageResource(elem.getImageResId());
+        holder.ivPoster.setImageResource(R.drawable.poster_placeholder);
+//        holder.ivPoster.setImageResource(elem.getImageResId());
         holder.tvGenre.setText(elem.getGenre());
         holder.tvTitle.setText(elem.getTitle());
 
         holder.itemView.setOnClickListener(v -> {
+            Log.d("FilmAdapter", "Opening dialog for film: " + elem.getTitle());
             FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
             FilmDetailsDialog dialog = new FilmDetailsDialog(elem);
             dialog.show(fm, "film_details");
