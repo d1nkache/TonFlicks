@@ -21,9 +21,11 @@ import com.example.tonflicks.recyclerView.Film;
 
 public class FilmDetailsDialog extends DialogFragment {
 
+    private int userId;
     private Film film;
 
-    public FilmDetailsDialog(Film film) {
+    public FilmDetailsDialog(Film film, int userId) {
+        this.userId = userId;
         this.film = film;
     }
 
@@ -44,15 +46,23 @@ public class FilmDetailsDialog extends DialogFragment {
 
         title.setText(film.getTitle());
         genre.setText(film.getGenre());
-        description.setText("Я НИКОГДА НЕ ДРОЧИЛ НА ГЕЙСКУЮ ПОРНУХУ"); // еблан
-        poster.setImageResource(R.drawable.poster_placeholder); //еблан
-
+        description.setText("привет мирэa!");
+        poster.setImageResource(R.drawable.poster_placeholder);
+        String userIdStr = String.valueOf(userId);
+        Toast.makeText(getContext(), "userId " + userIdStr, Toast.LENGTH_LONG).show();
         buyButton.setOnClickListener(v ->
         {
-            Toast.makeText(getContext(), "Билет куплен!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getActivity(), TicketBookingActivity.class);
-            startActivity(intent);
-            dismiss();
+            if (userId == 331) {
+                Toast.makeText(v.getContext(), "У вас гостевой режим!", Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
+            else {
+                Toast.makeText(getContext(), "Билет куплен!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), TicketBookingActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
+                dismiss();
+            }
         });
     }
 

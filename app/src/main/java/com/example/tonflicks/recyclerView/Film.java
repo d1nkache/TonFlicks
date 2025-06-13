@@ -1,5 +1,9 @@
 package com.example.tonflicks.recyclerView;
 
+import com.example.tonflicks.client.Screening;
+
+import java.util.List;
+
 public class Film {
     private String title;
     private String genre;

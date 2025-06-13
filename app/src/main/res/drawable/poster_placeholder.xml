@@ -8,10 +8,5 @@
         </shape>
     </item>
 
-<!--    &lt;!&ndash; Векторная иконка по центру &ndash;&gt;-->
-<!--    <item android:gravity="center">-->
-<!--        <drawable android:drawable="@drawable/ic_no_photo"/>-->
-<!--    </item>-->
-
 </layer-list>
 

@@ -46,9 +46,11 @@ public class NowPlayingFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String USER_ID = "userId";
     private static final String TAG = "NowPlayingFragment";
     private String mParam1;
     private String mParam2;
+    private int userId;
 
     private RecyclerView recyclerView;
 
@@ -56,11 +58,12 @@ public class NowPlayingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static NowPlayingFragment newInstance(String param1, String param2) {
+    public static NowPlayingFragment newInstance(String param1, String param2, int userId) {
         NowPlayingFragment fragment = new NowPlayingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        args.putInt(USER_ID, userId); // передаём userId
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,6 +74,7 @@ public class NowPlayingFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1); // e.g., "Москва"
             mParam2 = getArguments().getString(ARG_PARAM2); // e.g., "2025"
+            userId = getArguments().getInt(USER_ID);
         }
     }
 
@@ -85,12 +89,11 @@ public class NowPlayingFragment extends Fragment {
         recyclerView = view.findViewById(R.id.list_films);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        loadFilms(mParam1, "Все", mParam2); // Используем "Драма" как начальную категорию
+        loadFilms(mParam1, "Все", mParam2);
     }
 
     public void updateCategory(String newCategory) {
-        // Обновление списка фильмов с новой категорией
-        loadFilms(mParam1, newCategory, mParam2); // Передаем адрес, новую категорию и год
+        loadFilms(mParam1, newCategory, mParam2);
     }
 
     private void loadFilms(String address, String category, String dateStr) {
@@ -124,7 +127,7 @@ public class NowPlayingFragment extends Fragment {
                         Log.d(TAG, "Film: title=" + film.title + ", genre=" + film.genre + ", rating=" + film.rating);
                     }
 
-                    FilmAdapter adapter = new FilmAdapter(items);
+                    FilmAdapter adapter = new FilmAdapter(items, userId);
                     recyclerView.setAdapter(adapter);
                 } else {
                     Log.e(TAG, "Failed to load films. Response code: " + response.code() + ", Message: " + response.message());
@@ -143,5 +146,12 @@ public class NowPlayingFragment extends Fragment {
         ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void updateFilms(List<Film> films) {
+        if (recyclerView != null) {
+            FilmAdapter adapter = new FilmAdapter(films, userId);
+            recyclerView.setAdapter(adapter);
+        }
     }
 }

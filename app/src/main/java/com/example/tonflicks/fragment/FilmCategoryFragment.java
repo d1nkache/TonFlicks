@@ -72,7 +72,6 @@ public class FilmCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Используем правильный макет для категории (должен быть fragment_film_category)
         return inflater.inflate(R.layout.fragment_film_category, container, false);
     }
 
@@ -112,7 +111,6 @@ public class FilmCategoryFragment extends Fragment {
         CategoryAdapter categoryAdapter = new CategoryAdapter(items);
         recyclerView.setAdapter(categoryAdapter);
 
-        // Установка слушателя для передачи выбранной категории
         categoryAdapter.setOnCategoryClickListener(category -> {
             if (categorySelectedListener != null) {
                 categorySelectedListener.onCategorySelected(category);

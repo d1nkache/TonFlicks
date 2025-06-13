@@ -3,10 +3,15 @@ package com.example.tonflicks.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -19,12 +24,26 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.tonflicks.client.FilmApi;
+import com.example.tonflicks.client.FilmResponse;
 import com.example.tonflicks.fragment.FilmCategoryFragment;
 import com.example.tonflicks.fragment.NowPlayingFragment;
 import com.example.tonflicks.R;
+import com.example.tonflicks.recyclerView.Film;
+import com.example.tonflicks.recyclerView.FilmAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements FilmCategoryFragment.OnCategorySelectedListener {
 
+    int userId;
     private static final int INTERNET_PERMISSION_REQUEST_CODE = 1;
     private NowPlayingFragment nowPlayingFragment;
 
@@ -34,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements FilmCategoryFragm
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Проверка и запрос разрешения на интернет
         checkInternetPermission();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -43,49 +61,73 @@ public class MainActivity extends AppCompatActivity implements FilmCategoryFragm
             return insets;
         });
 
-        // Инициализация NowPlayingFragment
-        nowPlayingFragment = NowPlayingFragment.newInstance("Москва", "2025");
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        int userId = prefs.getInt("userId", -1);
+
+        nowPlayingFragment = NowPlayingFragment.newInstance("Москва", "2025", userId);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.nowPlayingFragmentContainer, nowPlayingFragment)
                 .commit();
 
-        // Инициализация FilmCategoryFragment
+
         FilmCategoryFragment filmCategoryFragment = FilmCategoryFragment.newInstance("категории", "2025");
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.categoriesFragmentContainer, filmCategoryFragment)
                 .commit();
 
-        // Настройка кнопки корзины
+
         ImageButton busketImageButton = findViewById(R.id.basketButton);
         busketImageButton.setOnClickListener(v -> {
-            Toast.makeText(MainActivity.this, "Корзина открыта", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, BasketActivity.class);
-            startActivity(intent);
+            if (userId == -1) {
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+            }
+
+            if (userId == 331) {
+                Toast.makeText(MainActivity.this, "у вас Гостевой режим!", Toast.LENGTH_SHORT).show();
+            }
+
+            if (userId != -1 && userId != 331) {
+                Toast.makeText(MainActivity.this, "Корзина открыта", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, BasketActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        EditText searchInput = findViewById(R.id.searchMovies);
+
+        searchInput.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+
+                String query = searchInput.getText().toString().trim();
+                if (!query.isEmpty()) {
+                    searchFilms(query);
+                }
+                return true;
+            }
+            return false;
         });
     }
 
     @Override
     public void onCategorySelected(String category) {
-        // Обновление NowPlayingFragment с новой категорией
         if (nowPlayingFragment != null) {
             nowPlayingFragment.updateCategory(category);
         }
     }
 
     private void checkInternetPermission() {
-        // Проверка статуса подключения к интернету
         if (!isNetworkAvailable()) {
             Toast.makeText(this, "Нет подключения к интернету", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Интернет-передача данных считается нормальным разрешением (android.permission.INTERNET)
-        // Но для надежности проверяем, добавлено ли разрешение в манифест
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Запрос разрешения, хотя обычно оно не требуется в рантайме
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.INTERNET},
                     INTERNET_PERMISSION_REQUEST_CODE);
@@ -112,4 +154,55 @@ public class MainActivity extends AppCompatActivity implements FilmCategoryFragm
             }
         }
     }
+
+    private List<Film> convertToFilmList(List<FilmResponse> filmResponses) {
+        List<Film> films = new ArrayList<>();
+
+        if (filmResponses != null) {
+            for (FilmResponse response : filmResponses) {
+                films.add(new Film(
+                        response.title,
+                        response.genre,
+                        response.description,
+                        response.imageResId,
+                        response.rating,
+                        response.year
+                ));
+            }
+        }
+
+        return films;
+    }
+    private void searchFilms(String query) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        FilmApi filmApi = retrofit.create(FilmApi.class);
+
+        filmApi.getFilmsByTitle(query).enqueue(new Callback<List<FilmResponse>>() {
+            @Override
+            public void onResponse(Call<List<FilmResponse>> call, Response<List<FilmResponse>> response) {
+                if (response.isSuccessful()) {
+                    List<Film> films = convertToFilmList(response.body());
+                    nowPlayingFragment.updateFilms(films);
+
+                    if (films.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Фильмы не найдены", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Найдено фильмов: " + films.size(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Ошибка ответа сервера: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FilmResponse>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Ошибка запроса: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

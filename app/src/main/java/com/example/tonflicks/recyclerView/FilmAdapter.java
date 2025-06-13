@@ -1,26 +1,34 @@
 package com.example.tonflicks.recyclerView;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tonflicks.activity.LoginActivity;
+import com.example.tonflicks.activity.MainActivity;
 import com.example.tonflicks.dialog.FilmDetailsDialog;
 import com.example.tonflicks.R;
 
 import java.util.List;
 
 public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
+    private int userId;
     private List<Film> items;
 
-    public FilmAdapter(List<Film> items) {
+    public FilmAdapter(List<Film> items, int userId) {
+        this.userId = userId;
         this.items = items;
     }
 
@@ -43,7 +51,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(v -> {
             Log.d("FilmAdapter", "Opening dialog for film: " + elem.getTitle());
             FragmentManager fm = ((AppCompatActivity) v.getContext()).getSupportFragmentManager();
-            FilmDetailsDialog dialog = new FilmDetailsDialog(elem);
+            FilmDetailsDialog dialog = new FilmDetailsDialog(elem, userId);
             dialog.show(fm, "film_details");
         });
     }
