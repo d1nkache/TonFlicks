@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <style name="RoundedButton">
+                <item name="android:background">@drawable/bg_primary_button</item>
+                <item name="android:textColor">@color/primary_button_text</item>
+                <item name="android:paddingHorizontal">24dp</item>
+                <item name="android:paddingVertical">12dp</item>
+                <item name="android:textStyle">bold</item>
+        </style>
+</resources>

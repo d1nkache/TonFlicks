@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить фильм"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#2C2C2C"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Название"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/etGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Жанр"
+            app:layout_constraintTop_toBottomOf="@id/etTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Описание"
+            android:minLines="3"
+            app:layout_constraintTop_toBottomOf="@id/etGenre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etImageResId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="ID изображения"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/etDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etRating"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Рейтинг (0.0–10.0)"
+            android:inputType="numberDecimal"
+            app:layout_constraintTop_toBottomOf="@id/etImageResId"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Год выпуска"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/etRating"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etReleaseDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Дата релиза (гггг-мм-дд)"
+            android:inputType="date"
+            app:layout_constraintTop_toBottomOf="@id/etYear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/etCinemaId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="ID кинотеатра"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/etReleaseDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddFilm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Добавить фильм"
+            android:textColor="@android:color/white"
+            app:cornerRadius="16dp"
+            app:backgroundTint="#6C63FF"
+            app:layout_constraintTop_toBottomOf="@id/etCinemaId"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <!-- Поле для ввода userId -->
+        <EditText
+            android:id="@+id/etUserId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="ID пользователя"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/btnAddFilm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp" />
+
+        <!-- Кнопка выдать админку -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGrantAdmin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Выдать админ права"
+            android:textColor="@android:color/white"
+            app:cornerRadius="16dp"
+            app:backgroundTint="#FF5722"
+            app:layout_constraintTop_toBottomOf="@id/etUserId"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
